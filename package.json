@@ -4,6 +4,9 @@
   "description": "Skill test Story of AMS",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
