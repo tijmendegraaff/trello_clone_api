@@ -19,4 +19,17 @@ router.post("/boards", auth, async (req, res) => {
   }
 });
 
+router.get("/boards", auth, async (req, res) => {
+  try {
+    await req.user
+      .populate({
+        path: "boards"
+      })
+      .execPopulate();
+    res.send(req.user.boards);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
 module.exports = router;
