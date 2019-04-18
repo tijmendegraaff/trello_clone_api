@@ -1,0 +1,7 @@
+{
+  "name": "trello_clone_api",
+  "version": "1.0.0",
+  "description": "Skill test Story of AMS",
+  "main": "index.js",
+  "license": "MIT"
+}
