@@ -47,6 +47,12 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+userSchema.virtual("boards", {
+  ref: "Board",
+  localField: "_id",
+  foreignField: "owner"
+});
+
 // Hide password and token array in response
 userSchema.methods.toJSON = function() {
   const user = this;
