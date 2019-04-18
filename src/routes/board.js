@@ -2,6 +2,7 @@ const express = require("express");
 const router = new express.Router();
 
 const Board = require("../models/board");
+const List = require("../models/list");
 
 const auth = require("../middleware/auth");
 
@@ -14,6 +15,20 @@ router.post("/boards", auth, async (req, res) => {
   try {
     await board.save();
     res.status(201).send(board);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+// Add list to board
+router.post("/boards/:id", auth, async (req, res) => {
+  const list = new List({
+    ...req.body,
+    boardId: req.params.id
+  });
+
+  try {
+    await list.save();
+    res.status(201).send(list);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -31,6 +46,24 @@ router.get("/boards", auth, async (req, res) => {
     res.status(500).send();
   }
 });
+
+// router.get("/boards/:id", auth, async (req, res) => {
+//   const _id = req.params.id;
+//   try {
+//     const board = await Board.findOne({ _id, owner: req.user.id })
+//       .populate({
+//         path: "lists"
+//       })
+//       .execPopulate();
+// if (!board) {
+//   throw new Error();
+// }
+//     console.log(board);
+//     res.send(board);
+//   } catch (e) {
+//     res.status(500).send();
+//   }
+// });
 
 router.patch("/boards/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
