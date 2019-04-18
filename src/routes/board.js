@@ -32,4 +32,19 @@ router.get("/boards", auth, async (req, res) => {
   }
 });
 
+router.delete("/boards/:id", auth, async (req, res) => {
+  try {
+    const board = await Board.findOneAndDelete({
+      _id: req.params.id,
+      owner: req.user._id
+    });
+    if (!board) {
+      return res.status(404).send();
+    }
+    res.send(board);
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
 module.exports = router;
