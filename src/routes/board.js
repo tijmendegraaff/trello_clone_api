@@ -32,6 +32,40 @@ router.get("/boards", auth, async (req, res) => {
   }
 });
 
+router.patch("/boards/:id", auth, async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ["name"];
+
+  const isValidOperation = updates.every(update => {
+    return allowedUpdates.includes(update);
+  });
+
+  if (!isValidOperation) {
+    return res.status(400).send({ error: "Invalid update" });
+  }
+
+  try {
+    const board = await Board.findOne({
+      _id: req.params.id,
+      owner: req.user._id
+    });
+
+    if (!board) {
+      return res.status(404).send();
+    }
+
+    updates.forEach(update => {
+      board[update] = req.body[update];
+    });
+
+    await board.save();
+
+    res.send(board);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 router.delete("/boards/:id", auth, async (req, res) => {
   try {
     const board = await Board.findOneAndDelete({
