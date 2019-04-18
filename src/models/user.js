@@ -47,6 +47,16 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+// Hide password and token array in response
+userSchema.methods.toJSON = function() {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+  delete userObject.tokens;
+
+  return userObject;
+};
 // Generate a token for given user and save it in DB
 userSchema.methods.generateAuthToken = async function() {
   const user = this;
