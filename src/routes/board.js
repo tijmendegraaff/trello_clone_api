@@ -47,23 +47,12 @@ router.get("/boards", auth, async (req, res) => {
   }
 });
 
-// router.get("/boards/:id", auth, async (req, res) => {
-//   const _id = req.params.id;
-//   try {
-//     const board = await Board.findOne({ _id, owner: req.user.id })
-//       .populate({
-//         path: "lists"
-//       })
-//       .execPopulate();
-// if (!board) {
-//   throw new Error();
-// }
-//     console.log(board);
-//     res.send(board);
-//   } catch (e) {
-//     res.status(500).send();
-//   }
-// });
+router.get("/boards/:id", auth, async (req, res) => {
+  const _id = req.params.id;
+  const board = await Board.findOne({ _id, owner: req.user.id }).populate(
+    "lists"
+  );
+});
 
 router.patch("/boards/:id", auth, async (req, res) => {
   const updates = Object.keys(req.body);
