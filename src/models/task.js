@@ -1,33 +1,30 @@
 const mongoose = require("mongoose");
 
-const listSchema = new mongoose.Schema(
+const taskSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
       trim: true
     },
+    description: {
+      type: String
+    },
     order: {
       type: Number,
       required: true
     },
-    boardId: {
+    listId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Board"
-    },
-    tasks: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Task"
-      }
-    ]
+      ref: "List"
+    }
   },
   {
     timestamps: true
   }
 );
 
-const List = mongoose.model("List", listSchema);
+const Task = mongoose.model("Task", taskSchema);
 
-module.exports = List;
+module.exports = Task;
